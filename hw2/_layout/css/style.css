@@ -249,12 +249,12 @@ main .login-form-box .body .field {
 }
 
 main .login-form-box .name {
-    padding: 1rem 0 0 0.5rem;
+    padding: 1.5rem 0.5rem 0 0.5rem;
     text-align: right;
 }
 
 main .login-form-box .value {
-    padding: 1rem 0 0 0.5rem;
+    padding: 1.5rem 0 0 0.5rem;
 }
 
 main .login-form-box .field .error {
