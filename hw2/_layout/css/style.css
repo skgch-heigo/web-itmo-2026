@@ -249,12 +249,12 @@ main .login-form-box .body .field {
 }
 
 main .login-form-box .name {
-    padding: 0.5rem;
+    padding: 1rem 0 0 0.5rem;
     text-align: right;
 }
 
 main .login-form-box .value {
-    padding: 0.5rem;
+    padding: 1rem 0 0 0.5rem;
 }
 
 main .login-form-box .field .error {
@@ -270,8 +270,12 @@ main .login-form-box .button-field {
     padding: 0.5rem;
 }
 
+main .login-form-box .checkbox-field label {
+    font-size: 0.7rem;
+}
+
 main .login-form-box .button-field input {
-    width: 8rem;
+    width: 7rem;
 }
 
 main .login-form-box .checkbox-field input {
