@@ -1,5 +1,6 @@
 :root {
     --border-color: rgb(185, 185, 185);
+    --border-color-table: #e1e1e1;
     --border-radius: 6px;
     --black-color: #333;
     --caption-color: #3B5998;
@@ -134,4 +135,46 @@ nav .search input {
     padding-left: 20px;
     color: #666;
     font-size: 0.9rem;
+}
+
+main .datatable .caption {
+    border-top-left-radius: var(--border-radius);
+    border-top-right-radius: var(--border-radius);
+    border-top: 1px solid var(--border-color-table);
+    padding: 0.25rem 0.5rem;
+    background-color: var(--border-color-table);
+}
+
+main .datatable table {
+    font-size: 0.8rem;
+    width: 100%;
+    border: 1px solid var(--border-color-table);
+    border-collapse: collapse;
+}
+
+main .datatable table tr, td, th {
+    padding: 0.25rem;
+    border: 1px solid var(--border-color-table);
+}
+
+main .datatable table tr {
+    text-align: center;
+}
+
+main .datatable table tbody tr:nth-child(2n-1) {
+    background-color: #f8f8f8;
+}
+
+main article {
+}
+
+main .login-form-box {
+}
+
+main .topic {
+    display: none;
+}
+
+main .topic:target {
+    display: block;
 }
