@@ -223,6 +223,77 @@ main article ul li {
 }
 
 main .login-form-box {
+    border: 1px solid var(--border-color);
+    border-top-left-radius: var(--border-radius);
+    border-top-right-radius: var(--border-radius);
+    width: 30rem;
+    margin: 0 auto;
+}
+
+main .login-form-box .header {
+    border-bottom: 1px solid var(--border-color);
+    padding: 0.3rem;
+    font-weight: bold;
+    color: var(--caption-color);
+}
+
+main .login-form-box .body form {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    align-items: center;
+    justify-content: center;
+}
+
+main .login-form-box .body .field {
+    display: contents;
+}
+
+main .login-form-box .name {
+    padding: 0.5rem;
+    text-align: right;
+}
+
+main .login-form-box .value {
+    padding: 0.5rem;
+}
+
+main .login-form-box .field .error {
+    padding: 0 0 0.5rem 0.5rem;
+    grid-column: 2;
+    color: red;
+    font-size: 12px;
+}
+
+main .login-form-box .checkbox-field,
+main .login-form-box .button-field {
+    grid-column: 2;
+    padding: 0.5rem;
+}
+
+main .login-form-box .button-field input {
+    width: 8rem;
+}
+
+main .login-form-box .checkbox-field input {
+    background: linear-gradient(to bottom, #ffffff 0%, #e0e0e0 100%)
+}
+
+main .login-form-box .links {
+    grid-column: 2;
+    text-align: right;
+    padding: 0.25rem;
+    font-size: 0.7rem;
+}
+
+main .login-form-box .footer {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.7rem;
+    flex-direction: row-reverse;
+    justify-content: flex-start;
+    padding: 0.25rem;
+    border-top: 1px solid var(--border-color);
 }
 
 main .topic {
