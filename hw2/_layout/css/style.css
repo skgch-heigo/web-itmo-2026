@@ -278,10 +278,6 @@ main .login-form-box .button-field input {
     width: 7rem;
 }
 
-main .login-form-box .checkbox-field input {
-    background: linear-gradient(to bottom, #ffffff 0%, #e0e0e0 100%)
-}
-
 main .login-form-box .links {
     grid-column: 2;
     text-align: right;
