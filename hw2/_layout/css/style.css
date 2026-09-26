@@ -165,7 +165,61 @@ main .datatable table tbody tr:nth-child(2n-1) {
     background-color: #f8f8f8;
 }
 
-main article {
+main article .title {
+    color: var(--caption-color);
+    font-size: 1.4rem;
+    padding: 0.25rem 0;
+    font-weight: bold;
+}
+
+main article .information {
+    color: var(--border-color);
+    padding: 0.25rem 0;
+}
+
+main article .body {
+    border-left: 4px solid var(--border-color);
+    padding-left: 1rem;
+}
+
+main article .body p:last-child {
+    margin-bottom: 0.3rem;
+}
+
+main article .footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 0.5rem 0.55rem;
+}
+
+main article .footer img {
+    vertical-align: middle;
+}
+
+main article .footer .left .positive-score {
+    font-weight: bold;
+    color: green;
+}
+
+main article .attachment {
+    padding-left: 0;
+    margin: 0.2rem 0;
+}
+
+main article ul {
+    font-size: 0.8rem;
+    color: #888;
+    list-style: none;
+}
+
+main article ul li {
+  background-image: url(../img/paperclip-16x16.png);
+  background-repeat: no-repeat;
+  background-position: left center;
+  padding: 0.25rem 0 0.25rem 20px;
 }
 
 main .login-form-box {
