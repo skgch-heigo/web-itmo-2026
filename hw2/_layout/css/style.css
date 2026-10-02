@@ -226,7 +226,8 @@ main .login-form-box {
     border: 1px solid var(--border-color);
     border-top-left-radius: var(--border-radius);
     border-top-right-radius: var(--border-radius);
-    width: 30rem;
+    width: 100%;
+    max-width: 30rem;
     margin: 0 auto;
 }
 
