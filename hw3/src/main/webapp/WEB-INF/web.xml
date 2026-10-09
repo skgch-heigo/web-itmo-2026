@@ -16,6 +16,16 @@
     </filter-mapping>
 
     <servlet>
+        <servlet-name>MessagesServlet</servlet-name>
+        <servlet-class>ru.itmo.wp.servlet.MessagesServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>MessagesServlet</servlet-name>
+        <url-pattern>/message/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>StaticServlet</servlet-name>
         <servlet-class>ru.itmo.wp.servlet.StaticServlet</servlet-class>
     </servlet>
