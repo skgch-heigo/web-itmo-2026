@@ -26,20 +26,35 @@ public class StaticServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String uri = request.getRequestURI();
-        File file = new File(SRC_STATIC + uri);
-        String sourcePath = SRC_STATIC;
-        if (!file.isFile()) {
-            file = new File(getServletContext().getRealPath("/static" + uri));
-            sourcePath = getServletContext().getRealPath("/static");
+        String[] allFilesUri = request.getRequestURI().split("\\+");
+        boolean setContentFlag = true;
+        File[] files = new File[allFilesUri.length];
+        for (int i = 0; i < allFilesUri.length; i++) {
+            String uri = allFilesUri[i];
+            if (!uri.startsWith("/")) {
+                uri = "/" + uri;
+            }
+            File file = new File(SRC_STATIC + uri);
+            String sourcePath = SRC_STATIC;
+            if (!file.isFile()) {
+                file = new File(getServletContext().getRealPath("/static" + uri));
+                sourcePath = getServletContext().getRealPath("/static");
+            }
+            if (file.isFile() && fileInDirectory(file, sourcePath)) {
+                if (setContentFlag) {
+                    response.setContentType(getServletContext().getMimeType(file.getName()));
+                    setContentFlag = false;
+                }
+                files[i] = file;
+            } else {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return;
+            }
         }
-        if (file.isFile() && fileInDirectory(file, sourcePath)) {
-            response.setContentType(getServletContext().getMimeType(file.getName()));
-            try (OutputStream outputStream = response.getOutputStream()) {
+        try (OutputStream outputStream = response.getOutputStream()) {
+            for (File file : files) {
                 Files.copy(file.toPath(), outputStream);
             }
-        } else {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
     }
 }
