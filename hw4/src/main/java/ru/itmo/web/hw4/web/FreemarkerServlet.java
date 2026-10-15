@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
@@ -46,12 +47,19 @@ public class FreemarkerServlet extends HttpServlet {
         request.setCharacterEncoding(UTF_8);
         response.setCharacterEncoding(UTF_8);
 
+        String pageUri = URLDecoder.decode(request.getRequestURI(), UTF_8);
+        if (pageUri.isEmpty() || pageUri.equals("/")) {
+            response.setStatus(HttpServletResponse.SC_FOUND);
+            response.setHeader("Location", "/index");
+            return;
+        }
+
         Template template;
         try {
-            template = freemarkerConfiguration.getTemplate(URLDecoder.decode(request.getRequestURI(), UTF_8) + ".ftlh");
+            template = freemarkerConfiguration.getTemplate(pageUri + ".ftlh");
         } catch (TemplateNotFoundException ignored) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            return;
+            template = freemarkerConfiguration.getTemplate("misc/pageNotFound.ftlh");
         }
 
         Map<String, Object> data = getData(request);
@@ -65,7 +73,7 @@ public class FreemarkerServlet extends HttpServlet {
         }
     }
 
-    private Map<String, Object> getData(HttpServletRequest request) {
+    private Map<String, Object> getData(HttpServletRequest request) throws UnsupportedEncodingException {
         Map<String, Object> data = new HashMap<>();
 
         for (Map.Entry<String, String[]> e : request.getParameterMap().entrySet()) {
@@ -83,7 +91,7 @@ public class FreemarkerServlet extends HttpServlet {
                 data.put(e.getKey(), val);
             }
         }
-        data.put("uri", request.getRequestURI());
+        data.put("uri", URLDecoder.decode(request.getRequestURI(), UTF_8));
         DataUtil.addData(request, data);
         return data;
     }
