@@ -33,7 +33,7 @@
         </div>
         <div class="enter-or-register-box">
             <#if user??>
-                <@userlink user/>
+                <@userlink user true/>
                 |
                 <a href="/logout">Logout</a>
             <#else>
@@ -46,7 +46,8 @@
             <#assign items=[
             {"href": "/index", "name": "Home"},
             {"href": "/misc/help", "name": "Help"},
-            {"href": "/contests", "name": "Contests"}
+            {"href": "/contests", "name": "Contests"},
+            {"href": "/users", "name": "Users"}
             ]/>
             <ul>
                 <#list items as item>
@@ -97,9 +98,9 @@
     </footer>
 </#macro>
 
-<#macro userlink user>
+<#macro userlink user nameOnly=false>
 <#-- @ftlvariable name="user" type="ru.itmo.web.hw4.model.User" -->
-    <a href="/user?handle=${user.handle}">${user.name}</a>
+<a href="/user?handle=${user.handle}" <#if !nameOnly>class="handleLink user${user.color}"</#if>>${user.name}</a>
 </#macro>
 
 <#function findBy items key value>

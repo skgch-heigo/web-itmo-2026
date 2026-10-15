@@ -7,6 +7,8 @@
     --boder: 1px solid var(--border-color);
     --border-radius: 6px;
     --caption-color: #3B5998;
+    --border-color-table: #e1e1e1;
+    --black-color: #333;
 }
 
 html {
@@ -128,4 +130,112 @@ a.arrow {
 
 .menuItemCurrent {
     border-bottom: 3px solid #3B5998;
+}
+
+.handleLink {
+    text-decoration: none;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: bold;
+}
+
+.userRED {
+    color: red;
+}
+
+.userBLUE {
+    color: blue;
+}
+
+.userGREEN {
+    color: green;
+}
+
+main .datatable .caption {
+    border-top-left-radius: var(--border-radius);
+    border-top-right-radius: var(--border-radius);
+    border-top: 1px solid var(--border-color-table);
+    padding: 0.25rem 0.5rem;
+    background-color: var(--border-color-table);
+}
+
+main .datatable table {
+    font-size: 0.8rem;
+    width: 100%;
+    border: 1px solid var(--border-color-table);
+    border-collapse: collapse;
+}
+
+main .datatable table tr, td, th {
+    padding: 0.25rem;
+    border: 1px solid var(--border-color-table);
+}
+
+main .datatable table tr {
+    text-align: center;
+}
+
+main .datatable table tbody tr:nth-child(2n-1) {
+    background-color: #f8f8f8;
+}
+
+main #blog article {
+    padding-bottom: 1rem;
+}
+
+main article .title {
+    color: var(--caption-color);
+    font-size: 1.4rem;
+    padding: 0.25rem 0;
+    font-weight: bold;
+}
+
+main article .information {
+    color: var(--border-color);
+    padding: 0.25rem 0;
+}
+
+main article .body {
+    border-left: 4px solid var(--border-color);
+    padding-left: 1rem;
+    word-wrap: break-word;
+}
+
+main article .body p:last-child {
+    margin-bottom: 0.3rem;
+}
+
+main article .footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 0.5rem 0.55rem;
+}
+
+main article .footer img {
+    vertical-align: middle;
+}
+
+main article .footer .left .positive-score {
+    font-weight: bold;
+    color: green;
+}
+
+main article .attachment {
+    padding-left: 0;
+    margin: 0.2rem 0;
+}
+
+main article ul {
+    font-size: 0.8rem;
+    color: #888;
+    list-style: none;
+}
+
+main article ul li {
+  background-image: url(img/paperclip-16x16.png);
+  background-repeat: no-repeat;
+  background-position: left center;
+  padding: 0.25rem 0 0.25rem 20px;
 }

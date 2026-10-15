@@ -10,7 +10,7 @@
     </#if>
 
     <#if u?has_content>
-        <#assign handle = u["handle"]!/>
+        <#assign handle = u.handle!/>
         <#assign next_u = c.nextBy(users, "handle", handle)!/>
         <#assign prev_u = c.prevBy(users, "handle", handle)!/>
         <div class="userbox">

@@ -49,7 +49,7 @@ public class FreemarkerServlet extends HttpServlet {
 
         String pageUri = URLDecoder.decode(request.getRequestURI(), UTF_8);
         if (pageUri.isEmpty() || pageUri.equals("/")) {
-            response.setStatus(HttpServletResponse.SC_FOUND);
+            response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
             response.setHeader("Location", "/index");
             return;
         }
