@@ -109,3 +109,25 @@
         </#if>
     </#list>
 </#function>
+
+<#function nextBy items key value>
+    <#list items as item>
+        <#if item[key] == value>
+            <#if item?has_next>
+                <#return items[item?index + 1]/>
+            </#if>
+            <#return null/>
+        </#if>
+    </#list>
+</#function>
+
+<#function prevBy items key value>
+    <#list items as item>
+        <#if item[key] == value>
+            <#if !item?is_first>
+                <#return items[item?index - 1]/>
+            </#if>
+            <#return null/>
+        </#if>
+    </#list>
+</#function>

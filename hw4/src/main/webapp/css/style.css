@@ -111,3 +111,17 @@ footer {
     border-top: var(--boder);
     text-align: center;
 }
+
+.userbox {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: var(--boder);
+    border-radius: var(--border-radius);
+    padding-left: 1rem;
+}
+
+a.arrow {
+    text-decoration: none;
+    color: blue;
+}
