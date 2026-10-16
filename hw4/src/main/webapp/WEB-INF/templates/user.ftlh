@@ -16,11 +16,20 @@
         <div class="userbox">
             <div class="userInfo">
             <h2><@c.userlink u/></h2>
-            <ul>
-                 <li>id: ${u.id}</li>
-                 <li>handle: ${u.handle}</li>
-                 <li>name: ${u.name}</li>
-            </ul>
+            <#assign items=[
+                        {"name": "id", "value": u.id},
+                        {"name": "handle", "value": u.handle},
+                        {"name": "name", "value": u.name},
+                        {"name": "number of posts", "value": (posts?filter(p -> p.user_id == u.id))?size}
+                        ]/>
+                        <ul>
+                            <#list items as item>
+                                <li>
+                                    ${item.name}: ${item.value}
+                                </li>
+                            </#list>
+                        </ul>
+                        <a href="/posts?user_id=${u.id}">Posts of ${u.handle}</a>
             </div>
             <img alt="User Image" src="/img/no-title.jpg">
         </div>

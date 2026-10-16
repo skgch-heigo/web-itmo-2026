@@ -7,7 +7,7 @@ public class User {
     private final Color color;
 
     public enum Color {
-        RED, GREEN, BLUE;
+        RED, GREEN, BLUE
     }
 
     public User(long id, String handle, String name, Color color) {

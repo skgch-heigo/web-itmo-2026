@@ -62,33 +62,9 @@
 
 <#macro sidebar>
     <aside>
-        <section>
-            <div class="header">Information</div>
-            <div class="body">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores enim expedita facilis
-                fugiat ipsum iste nobis reprehenderit tempore ut voluptatibus?
-            </div>
-            <div class="footer">
-                <a href="#">View all</a>
-            </div>
-        </section>
-        <section>
-            <div class="header">Information</div>
-            <div class="body">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores enim expedita facilis
-                fugiat ipsum iste nobis reprehenderit tempore ut voluptatibus?
-            </div>
-            <div class="footer">
-                <a href="#">View all</a>
-            </div>
-        </section>
-        <section>
-            <div class="header">Information</div>
-            <div class="body">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores enim expedita facilis
-                fugiat ipsum iste nobis reprehenderit tempore ut voluptatibus?
-            </div>
-            <div class="footer">
-                <a href="#">View all</a>
-            </div>
-        </section>
+        <#list posts as post>
+                    <@c.postSection post/>
+                    </#list>
     </aside>
 </#macro>
 
@@ -101,6 +77,41 @@
 <#macro userlink user nameOnly=false>
 <#-- @ftlvariable name="user" type="ru.itmo.web.hw4.model.User" -->
 <a href="/user?handle=${user.handle}" <#if !nameOnly>class="handleLink user${user.color}"</#if>>${user.name}</a>
+</#macro>
+
+<#macro postArticle post fullText=false>
+<article>
+    <#assign u = c.findBy(users, "id", post.user_id)!/>
+                    <div class="title">${post.title}</div>
+                    <div class="information">By <@c.userlink u/></div>
+                    <div class="body">
+                        <p><#if fullText>${post.text}<#else>${post.text?truncate(350)}</#if></p>
+                    </div>
+                    <div class="footer">
+                        <div class="left">
+                            <img src="img/voteup.png" title="Vote Up" alt="Vote Up"/>
+                            <span class="positive-score">+0</span>
+                            <img src="img/votedown.png" title="Vote Down" alt="Vote Down"/>
+                        </div>
+                        <div class="right">
+                            <img src="img/date_16x16.png" title="Publish Time" alt="Publish Time"/>
+                            =:=
+                            <img src="img/comments_16x16.png" title="Comments" alt="Comments"/>
+                            <a href="#">0</a>
+                        </div>
+                    </div>
+                </article>
+</#macro>
+
+<#macro postSection post>
+<section>
+            <div class="header">Post #${post.id}</div>
+            <div class="body"> ${post.text?truncate(350)}
+            </div>
+            <div class="footer">
+                <a href="/post?post_id=${post.id}">View all</a>
+            </div>
+        </section>
 </#macro>
 
 <#function findBy items key value>

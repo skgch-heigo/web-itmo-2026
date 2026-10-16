@@ -90,6 +90,7 @@ aside section .header:before {
 
 aside section .body {
     padding: 0.25rem;
+    word-wrap: break-word;
 }
 
 aside section .footer {
@@ -120,7 +121,7 @@ footer {
     align-items: center;
     border: var(--boder);
     border-radius: var(--border-radius);
-    padding-left: 1rem;
+    padding: 0 1rem 1rem 1rem;
 }
 
 a.arrow {
