@@ -172,7 +172,6 @@ public class FrontServlet extends HttpServlet {
             }
         }
         Template template = null;
-        System.out.println(request.getSession().getAttribute("lang"));
         if (request.getSession().getAttribute("lang") != null) {
             try {
                 template = newTemplate(pageClass.getSimpleName() + "_"

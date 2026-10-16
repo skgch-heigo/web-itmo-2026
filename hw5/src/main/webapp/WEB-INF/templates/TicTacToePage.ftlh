@@ -28,6 +28,7 @@
             Game over. Os won!
         <#elseif phase=="DRAW">
             Game over. Draw!
+
         </#if>
     </div>
 
