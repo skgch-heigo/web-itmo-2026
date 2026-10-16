@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -73,6 +74,10 @@ public class FrontServlet extends HttpServlet {
 
     private void process(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String lang = request.getParameter("lang");
+        if (lang != null && lang.length() == 2 && lang.matches("[A-Za-z]+")) {
+            request.getSession().setAttribute("lang", lang);
+        }
         Route route = Route.newRoute(request);
         try {
             process(route, request, response);
@@ -85,6 +90,35 @@ public class FrontServlet extends HttpServlet {
         }
     }
 
+    Method findMethod(Class<?> clazz, String action) {
+        if (clazz == null) {
+            return null;
+        }
+        for (Method methodNow : clazz.getDeclaredMethods()) {
+            if (!methodNow.getName().equals(action) || Modifier.isStatic(methodNow.getModifiers())) {
+                continue;
+            }
+            boolean goodMethod = true;
+            for (Class<?> parameterClass : methodNow.getParameterTypes()) {
+                if (!(parameterClass.equals(HttpServletRequest.class) || parameterClass.equals(Map.class))) {
+                    goodMethod = false;
+                    break;
+                }
+            }
+            if (goodMethod) {
+                return methodNow;
+            }
+        }
+        Method method;
+        for (Class<?> interfaceNow : clazz.getInterfaces()) {
+            method = findMethod(interfaceNow, action);
+            if (method != null) {
+                return method;
+            }
+        }
+        return findMethod(clazz.getSuperclass(), action);
+    }
+
     private void process(Route route, HttpServletRequest request, HttpServletResponse response)
             throws NotFoundException, ServletException, IOException {
         Class<?> pageClass;
@@ -94,14 +128,7 @@ public class FrontServlet extends HttpServlet {
             throw new NotFoundException();
         }
 
-        Method method = null;
-        for (Class<?> clazz = pageClass; method == null && clazz != null; clazz = clazz.getSuperclass()) {
-            try {
-                method = clazz.getDeclaredMethod(route.getAction(), HttpServletRequest.class, Map.class);
-            } catch (NoSuchMethodException ignored) {
-                // No operations.
-            }
-        }
+        Method method = findMethod(pageClass, route.getAction());
 
         if (method == null) {
             throw new NotFoundException();
@@ -117,9 +144,19 @@ public class FrontServlet extends HttpServlet {
         }
 
         Map<String, Object> view = new HashMap<>();
+        Object[] arguments = new Object[method.getParameterTypes().length];
+        Class<?>[] args = method.getParameterTypes();
+        for (int i = 0; i < args.length; i++) {
+            Class<?> arg = args[i];
+            if (arg.equals(HttpServletRequest.class)) {
+                arguments[i] = request;
+            } else {
+                arguments[i] = view;
+            }
+        }
         method.setAccessible(true);
         try {
-            method.invoke(page, request, view);
+            method.invoke(page, arguments);
         } catch (IllegalAccessException e) {
             throw new ServletException("Can't invoke action method [pageClass="
                     + pageClass + ", method=" + method + "]");
@@ -134,8 +171,17 @@ public class FrontServlet extends HttpServlet {
                         + pageClass + ", method=" + method + "]", cause);
             }
         }
-
-        Template template = newTemplate(pageClass.getSimpleName() + ".ftlh");
+        Template template = null;
+        System.out.println(request.getSession().getAttribute("lang"));
+        if (request.getSession().getAttribute("lang") != null) {
+            try {
+                template = newTemplate(pageClass.getSimpleName() + "_"
+                        + request.getSession().getAttribute("lang") + ".ftlh");
+            } catch (ServletException ignored) {}
+        }
+        if (template == null) {
+            template = newTemplate(pageClass.getSimpleName() + ".ftlh");
+        }
         response.setContentType("text/html");
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
         try {
