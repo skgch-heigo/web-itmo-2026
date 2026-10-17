@@ -24,7 +24,7 @@ public class TicTacToePage {
         public String getPhase() {return phase; }
         public boolean isCrossesMove() {return crossesMove; }
         public void makeMove(int row, int col, String value) {
-            if (!phase.equals("RUNNING") || cells[row][col] != null || row >= size || col >= size) {
+            if (!phase.equals("RUNNING")  || row >= size || col >= size || cells[row][col] != null) {
                 return;
             }
             cells[row][col] = value;
