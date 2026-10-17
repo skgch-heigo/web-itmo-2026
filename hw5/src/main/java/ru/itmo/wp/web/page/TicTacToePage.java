@@ -65,14 +65,16 @@ public class TicTacToePage {
         if (state == null) {
             state = new State();
         }
-        for (int row = 0; row < state.getSize(); row++) {
-            for (int col = 0; col < state.getSize(); col++) {
+        boolean found = false;
+        for (int row = 0; !found && row < state.getSize(); row++) {
+            for (int col = 0; !found && col < state.getSize(); col++) {
                 if (request.getParameter("cell_" + row + col) != null) {
                     if (state.isCrossesMove()) {
                         state.makeMove(row, col, "X");
                     } else {
                         state.makeMove(row, col, "O");
                     }
+                    found = true;
                 }
             }
         }
