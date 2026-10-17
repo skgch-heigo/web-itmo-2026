@@ -24,7 +24,7 @@ public class TicTacToePage {
         public String getPhase() {return phase; }
         public boolean isCrossesMove() {return crossesMove; }
         public void makeMove(int row, int col, String value) {
-            if (!phase.equals("RUNNING")) {
+            if (!phase.equals("RUNNING") || cells[row][col] != null || row >= size || col >= size) {
                 return;
             }
             cells[row][col] = value;
@@ -86,7 +86,7 @@ public class TicTacToePage {
         request.getSession().setAttribute("state", state);
     }
 
-    private void action(HttpServletRequest request, Map<String, Object> view) {
+    private void action(Map<String, Object> view, HttpServletRequest request) {
         State state = (State) request.getSession().getAttribute("state");
         if (state == null) {
             state = new State();
