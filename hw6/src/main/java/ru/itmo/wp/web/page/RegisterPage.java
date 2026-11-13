@@ -9,20 +9,27 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 @SuppressWarnings({"unused"})
-public class RegisterPage {
+public class RegisterPage extends Page {
     private final UserService userService = new UserService();
 
-    private void action(HttpServletRequest request, Map<String, Object> view) {
+    protected void action(HttpServletRequest request, Map<String, Object> view) {
         // No operations.
     }
 
     private void register(HttpServletRequest request, Map<String, Object> view) throws ValidationException {
         User user = new User();
         user.setLogin(request.getParameter("login"));
+        user.setEmail(request.getParameter("email"));
         String password = request.getParameter("password");
+
+        if (!password.equals(request.getParameter("passwordConfirmation"))) {
+            throw new ValidationException("Passwords should be equal");
+        }
 
         userService.validateRegistration(user, password);
         userService.register(user, password);
+
+
 
         request.getSession().setAttribute("message", "You are successfully registered!");
         throw new RedirectException("/index");

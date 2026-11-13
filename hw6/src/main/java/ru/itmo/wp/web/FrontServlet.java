@@ -3,7 +3,6 @@ package ru.itmo.wp.web;
 import com.google.common.base.Strings;
 import com.google.gson.Gson;
 import freemarker.template.*;
-import ru.itmo.wp.model.domain.User;
 import ru.itmo.wp.model.exception.ValidationException;
 import ru.itmo.wp.web.annotation.Json;
 import ru.itmo.wp.web.exception.NotFoundException;
@@ -60,7 +59,7 @@ public class FrontServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        sourceFreemarkerConfiguration = newFreemarkerConfiguration(getServletContext().getRealPath(".") + "/../../src/main/webapp/WEB-INF/templates", true);
+        sourceFreemarkerConfiguration = newFreemarkerConfiguration(getServletContext().getRealPath("/") + "/../../../src/main/webapp/WEB-INF/templates", true);
         targetFreemarkerConfiguration = newFreemarkerConfiguration(getServletContext().getRealPath("WEB-INF/templates"), false);
     }
 
@@ -117,6 +116,23 @@ public class FrontServlet extends HttpServlet {
         }
     }
 
+    private Method findMethod(Class<?> pageClass, String action) throws NotFoundException {
+        Method method = null;
+        for (Class<?> clazz = pageClass; method == null && clazz != null; clazz = clazz.getSuperclass()) {
+            try {
+                method = clazz.getDeclaredMethod(action, HttpServletRequest.class, Map.class);
+            } catch (NoSuchMethodException ignored) {
+                // No operations.
+            }
+        }
+
+        if (method == null) {
+            throw new NotFoundException();
+        }
+
+        return method;
+    }
+
     private void process(Route route,
                          HttpServletRequest request,
                          HttpServletResponse response) throws NotFoundException, ServletException, IOException {
@@ -127,18 +143,9 @@ public class FrontServlet extends HttpServlet {
             throw new NotFoundException();
         }
 
-        Method method = null;
-        for (Class<?> clazz = pageClass; method == null && clazz != null; clazz = clazz.getSuperclass()) {
-            try {
-                method = clazz.getDeclaredMethod(route.getAction(), HttpServletRequest.class, Map.class);
-            } catch (NoSuchMethodException ignored) {
-                // No operations.
-            }
-        }
-
-        if (method == null) {
-            throw new NotFoundException();
-        }
+        Method method = findMethod(pageClass, route.getAction());
+        Method beforeMethod = findMethod(pageClass, "before");
+        Method afterMethod = findMethod(pageClass, "after");
 
         String acceptRequestHeader = request.getHeader("Accept");
         // Ответ в JSON, если метод помечен @Json или клиент прислал Accept: application/json.
@@ -155,11 +162,14 @@ public class FrontServlet extends HttpServlet {
 
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
         Map<String, Object> view = new HashMap<>();
-        putUser(request, view);
 
         try {
             method.setAccessible(true);
+            beforeMethod.setAccessible(true);
+            afterMethod.setAccessible(true);
+            beforeMethod.invoke(page, request, view);
             method.invoke(page, request, view);
+            afterMethod.invoke(page, request, view);
         } catch (IllegalAccessException e) {
             throw new ServletException("Unable to run action [pageClass=" + pageClass + ", method=" + method + "].", e);
         } catch (InvocationTargetException e) {
@@ -205,13 +215,6 @@ public class FrontServlet extends HttpServlet {
     private void writeJson(HttpServletResponse response, Map<String, Object> view) throws IOException {
         response.setContentType(APPLICATION_JSON_MIME_TYPE);
         response.getWriter().print(new Gson().toJson(view));
-    }
-
-    private void putUser(HttpServletRequest request, Map<String, Object> view) {
-        User user = (User) request.getSession().getAttribute("user");
-        if (user != null) {
-            view.put("user", user);
-        }
     }
 
     private static final class Route {

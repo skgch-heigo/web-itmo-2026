@@ -6,10 +6,10 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 @SuppressWarnings({"unused"})
-public class UsersPage {
+public class UsersPage extends Page {
     private final UserService userService = new UserService();
 
-    private void action(HttpServletRequest request, Map<String, Object> view) {
+    protected void action(HttpServletRequest request, Map<String, Object> view) {
         view.put("users", userService.findAll());
     }
 }

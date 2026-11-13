@@ -18,7 +18,7 @@ public class StaticFilter extends HttpFilter {
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
         String uri = request.getRequestURI();
 
-        File file = new File(getServletContext().getRealPath(".") + "/../../src/main/webapp" + uri);
+        File file = new File(getServletContext().getRealPath(".") + "../../src/main/webapp" + uri);
         if (!file.isFile()) {
             file = new File(getServletContext().getRealPath(uri));
         }

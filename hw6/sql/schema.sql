@@ -10,3 +10,34 @@ CREATE TABLE `User` (
     PRIMARY KEY (`id`),
     UNIQUE KEY `uk_User_login` (`login`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
+
+ALTER TABLE `User` ADD COLUMN `email` VARCHAR(255) NULL;
+
+CREATE TABLE `Event` (
+                         `id`           BIGINT       NOT NULL AUTO_INCREMENT,
+                         `userId`       BIGINT       NOT NULL,
+                         `type`  ENUM('ENTER', 'LOGOUT') NOT NULL,
+                         `creationTime` DATETIME     NOT NULL,
+                         PRIMARY KEY (`id`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
+
+ALTER TABLE `Event`
+    ADD CONSTRAINT `fk_Event_userId`
+        FOREIGN KEY (`userId`) REFERENCES `User` (`id`);
+
+
+CREATE TABLE `Talk` (
+                         `id`           BIGINT       NOT NULL AUTO_INCREMENT,
+                         `sourceUserId`       BIGINT       NOT NULL,
+                         `targetUserId`       BIGINT       NOT NULL,
+                         `text`               TEXT         NOT NULL,
+                         `creationTime`       DATETIME     NOT NULL,
+                         PRIMARY KEY (`id`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
+
+ALTER TABLE `Talk`
+    ADD CONSTRAINT `fk_Talk_sourceUserId`
+        FOREIGN KEY (`sourceUserId`) REFERENCES `User` (`id`);
+ALTER TABLE `Talk`
+    ADD CONSTRAINT `fk_Talk_targetUserId`
+        FOREIGN KEY (`targetUserId`) REFERENCES `User` (`id`);

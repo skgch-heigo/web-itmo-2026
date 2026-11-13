@@ -15,6 +15,10 @@ public class UserService {
 
     private final UserRepository userRepository = new UserRepositoryImpl();
 
+    private boolean isEmail(String email) {
+        return email.matches("[a-zA-Z0-9_%+-]+@[a-zA-Z0-9._%+-]+");
+    }
+
     public void validateRegistration(User user, String password) throws ValidationException {
         if (Strings.isNullOrEmpty(user.getLogin())) {
             throw new ValidationException("Login is required");
@@ -27,6 +31,16 @@ public class UserService {
         }
         if (userRepository.findByLogin(user.getLogin()) != null) {
             throw new ValidationException("Login is already in use");
+        }
+
+        if (Strings.isNullOrEmpty(user.getEmail())) {
+            throw new ValidationException("Email is required");
+        }
+        if (!isEmail(user.getEmail())) {
+            throw new ValidationException("Not a valid email");
+        }
+        if (userRepository.findByEmail(user.getEmail()) != null) {
+            throw new ValidationException("Email is already in use");
         }
 
         if (Strings.isNullOrEmpty(password)) {
@@ -44,12 +58,20 @@ public class UserService {
         userRepository.save(user, getPasswordSha(password));
     }
 
-    public void validateEnter(String login, String password) throws ValidationException {
-        if (Strings.isNullOrEmpty(login)) {
-            throw new ValidationException("Login is required");
+    public void validateEnter(String loginOrEmail, String password) throws ValidationException {
+        if (Strings.isNullOrEmpty(loginOrEmail)) {
+            throw new ValidationException("Login or email is required");
         }
         if (Strings.isNullOrEmpty(password)) {
             throw new ValidationException("Password is required");
+        }
+        String login = loginOrEmail;
+        if (isEmail(loginOrEmail)) {
+            User user = userRepository.findByEmail(loginOrEmail);
+            if (user == null) {
+                throw new ValidationException("Invalid email or password");
+            }
+            login = user.getLogin();
         }
         if (findByLoginAndPassword(login, password) == null) {
             throw new ValidationException("Invalid login or password");
@@ -60,11 +82,29 @@ public class UserService {
         return userRepository.findByLoginAndPasswordSha(login, getPasswordSha(password));
     }
 
+    public User findByLoginOrEmailAndPassword(String loginOrEmail, String password) {
+        String login = loginOrEmail;
+        if (isEmail(loginOrEmail)) {
+            User user = userRepository.findByEmail(loginOrEmail);
+            login = user.getLogin();
+        }
+        return findByLoginAndPassword(login, password);
+    }
+
+    public User find(long id) {
+        return userRepository.find(id);
+    }
+
+
     public List<User> findAll() {
         return userRepository.findAll();
     }
 
     private String getPasswordSha(String password) {
         return Hashing.sha256().hashBytes((PASSWORD_SALT + password).getBytes(StandardCharsets.UTF_8)).toString();
+    }
+
+    public long findCount() {
+        return userRepository.findCount();
     }
 }

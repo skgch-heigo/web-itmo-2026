@@ -6,14 +6,14 @@
     <div class="enter form-box">
         <div class="header">Enter</div>
         <div class="body">
-            <form method="post" action="">
+            <form class="login-form" method="post" action="">
                 <input type="hidden" name="action" value="enter"/>
                 <div class="field">
                     <div class="name">
-                        <label for="login">Login</label>
+                        <label for="loginOrEmail">Login</label>
                     </div>
                     <div class="value">
-                        <input id="login" name="login" value="${login!}"/>
+                        <input id="loginOrEmail" name="loginOrEmail"/>
                     </div>
                 </div>
                 <div class="field">
@@ -24,13 +24,22 @@
                         <input id="password" name="password" type="password"/>
                     </div>
                 </div>
-                <#if error??>
-                    <div class="error">${error}</div>
-                </#if>
+                <div class="error"></div>
                 <div class="button-field">
                     <input type="submit" value="Enter">
                 </div>
             </form>
         </div>
     </div>
+    <script>
+        $(function () {
+            $(".login-form").submit(function () {
+                const $form = $(this);
+                const loginOrEmail = $form.find("input[name='loginOrEmail']").val();
+                const password = $form.find("input[name='password']").val();
+                ajax({action: "enter", data: {loginOrEmail, password}, form: $form});
+                return false;
+            });
+        });
+    </script>
 </@c.page>
