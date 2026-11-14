@@ -9,6 +9,7 @@
     <link rel="stylesheet" type="text/css" href="/css/normalize.css">
     <link rel="stylesheet" type="text/css" href="/css/style.css">
     <link rel="stylesheet" type="text/css" href="/css/form.css">
+    <link rel="stylesheet" type="text/css" href="/css/article.css">
     <link rel="stylesheet" type="text/css" href="/css/datatable.css">
     <script src="/js/jquery-3.6.1.min.js"></script>
     <script src="/js/notify.min.js"></script>
@@ -36,6 +37,7 @@
         <ul>
             <li><a href="/index">Home</a></li>
             <li><a href="/users">Users</a></li>
+            <#if user??><li><a href="/article">Article</a></li></#if>
         </ul>
     </nav>
 </header>

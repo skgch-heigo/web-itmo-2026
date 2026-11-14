@@ -7,6 +7,7 @@ public class User implements Serializable {
     private long id;
     private String login;
     private String email;
+    private boolean admin;
     private Date creationTime;
 
     public long getId() {
@@ -28,6 +29,10 @@ public class User implements Serializable {
     public void setLogin(String login) {
         this.login = login;
     }
+
+    public boolean getAdmin() { return admin; }
+
+    public void setAdmin(boolean admin) { this.admin = admin; }
 
     public Date getCreationTime() {
         return creationTime;

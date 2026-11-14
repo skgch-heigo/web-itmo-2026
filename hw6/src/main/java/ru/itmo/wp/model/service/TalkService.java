@@ -1,5 +1,6 @@
 package ru.itmo.wp.model.service;
 
+import com.google.common.base.Strings;
 import ru.itmo.wp.model.domain.Talk;
 import ru.itmo.wp.model.exception.ValidationException;
 import ru.itmo.wp.model.repository.TalkRepository;
@@ -14,6 +15,12 @@ public class TalkService {
     public void validateTalk(Talk talk) throws ValidationException {
         if (userService.find(talk.getTargetUserId()) == null) {
             throw new ValidationException("Invalid target user");
+        }
+        if (Strings.isNullOrEmpty(talk.getText())) {
+            throw new ValidationException("Message cannot be empty");
+        }
+        if (talk.getSourceUserId() == talk.getTargetUserId()) {
+            throw new ValidationException("You cannot send a message to yourself");
         }
     }
 

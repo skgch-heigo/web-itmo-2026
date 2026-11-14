@@ -18,4 +18,6 @@ public interface UserRepository {
     List<User> findAll();
 
     void save(User user, String passwordSha);
+
+    void setAdmin(long id, boolean admin);
 }

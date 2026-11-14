@@ -29,6 +29,7 @@
                              <input id="text" name="text"/>
                          </div>
                     </div>
+                    <div class="error"></div>
                     <div class="button-field">
                         <input type="submit" value="sendMessage">
                     </div>
@@ -65,4 +66,15 @@
             </tbody>
         </table>
     </div>
+    <script>
+        $(function () {
+                $(".message-form").submit(function () {
+                    const $form = $(this);
+                    const targetUserId = $form.find("select[name='targetUserId']").val();
+                    const text = $form.find("input[name='text']").val();
+                    ajax({action: "sendMessage", data: {targetUserId, text}, form: $form});
+                    return false;
+                });
+            });
+        </script>
 </@c.page>

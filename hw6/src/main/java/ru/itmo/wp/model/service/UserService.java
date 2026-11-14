@@ -78,6 +78,12 @@ public class UserService {
         }
     }
 
+    public void validateAdmin(long id) throws ValidationException {
+        if (!userRepository.find(id).getAdmin()) {
+            throw new ValidationException("Not enough rights");
+        }
+    }
+
     public User findByLoginAndPassword(String login, String password) {
         return userRepository.findByLoginAndPasswordSha(login, getPasswordSha(password));
     }
@@ -106,5 +112,9 @@ public class UserService {
 
     public long findCount() {
         return userRepository.findCount();
+    }
+
+    public void setAdmin(long id, boolean admin) {
+        userRepository.setAdmin(id, admin);
     }
 }

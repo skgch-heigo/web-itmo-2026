@@ -41,3 +41,21 @@ ALTER TABLE `Talk`
 ALTER TABLE `Talk`
     ADD CONSTRAINT `fk_Talk_targetUserId`
         FOREIGN KEY (`targetUserId`) REFERENCES `User` (`id`);
+
+
+CREATE TABLE `Article` (
+                           `id`           BIGINT       NOT NULL AUTO_INCREMENT,
+                           `userId`       BIGINT       NOT NULL,
+                           `title`       TEXT       NOT NULL,
+                           `text`               TEXT         NOT NULL,
+                           `hidden`	BOOLEAN      NOT NULL,
+                           `creationTime`       DATETIME     NOT NULL,
+                           PRIMARY KEY (`id`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
+
+ALTER TABLE `Article`
+    ADD CONSTRAINT `fk_Article_userId`
+        FOREIGN KEY (`userId`) REFERENCES `User` (`id`);
+
+ALTER TABLE `User` ADD COLUMN `admin` BOOLEAN NOT NULL DEFAULT FALSE;
+UPDATE `User` SET `admin` = TRUE WHERE `login` = 'heigo';

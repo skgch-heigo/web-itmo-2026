@@ -14,7 +14,8 @@ window.ajax = function (options) {
             type = "POST",
             dataType = "json",
             data = {},
-            form = null
+            form = null,
+            success: userSuccess = null
         } = options;
 
     $.ajax({
@@ -26,9 +27,15 @@ window.ajax = function (options) {
                 dataType,
                 success: function (response) {
                     if (response["error"]) {
-                        form.find(".error").text(response["error"]);
+                        if (form) {
+                            form.find(".error").text(response["error"]);
+                        }
                     } else if (response["redirect"]) {
                          location.href = response["redirect"];
+                    } else {
+                        if (userSuccess) {
+                            userSuccess(response);
+                        }
                     }
                 }
     });

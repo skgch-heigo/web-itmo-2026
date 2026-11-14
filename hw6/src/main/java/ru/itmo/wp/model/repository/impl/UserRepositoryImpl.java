@@ -112,6 +112,9 @@ public class UserRepositoryImpl implements UserRepository {
                 case "email":
                     user.setEmail(resultSet.getString(i));
                     break;
+                case "admin":
+                    user.setAdmin(resultSet.getBoolean(i));
+                    break;
                 case "creationTime":
                     user.setCreationTime(resultSet.getTimestamp(i));
                     break;
@@ -162,6 +165,19 @@ public class UserRepositoryImpl implements UserRepository {
             }
         } catch (SQLException e) {
             throw new RepositoryException("Can't count users.", e);
+        }
+    }
+
+    @Override
+    public void setAdmin(long id, boolean admin) {
+        try (Connection connection = DATA_SOURCE.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement("UPDATE `User` SET `admin`=? WHERE `id`=?")) {
+                statement.setBoolean(1, admin);
+                statement.setLong(2, id);
+                statement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            throw new RepositoryException("Can't update user", e);
         }
     }
 }

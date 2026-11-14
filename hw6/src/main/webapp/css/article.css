@@ -1,0 +1,58 @@
+article .title {
+    overflow-wrap: break-word;
+    color: var(--caption-color);
+    font-size: 1.4rem;
+    padding: 0.25rem 0;
+    font-weight: bold;
+}
+
+article .information {
+    color: var(--border-color);
+    padding: 0.25rem 0;
+}
+
+article .body {
+    overflow-wrap: break-word;
+    border-left: 4px solid var(--border-color);
+    padding-left: 1rem;
+}
+
+article .body p:last-child {
+    margin-bottom: 0.3rem;
+}
+
+article .footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 0.5rem 0.55rem;
+}
+
+article .footer img {
+    vertical-align: middle;
+}
+
+article .footer .left .positive-score {
+    font-weight: bold;
+    color: green;
+}
+
+article .attachment {
+    padding-left: 0;
+    margin: 0.2rem 0;
+}
+
+article ul {
+    font-size: 0.8rem;
+    color: #888;
+    list-style: none;
+}
+
+article ul li {
+  background-image: url(../img/paperclip-16x16.png);
+  background-repeat: no-repeat;
+  background-position: left center;
+  padding: 0.25rem 0 0.25rem 20px;
+}
