@@ -13,7 +13,7 @@ public interface UserRepository {
 
     long findCount();
 
-    User findByLoginAndPasswordSha(String login, String passwordSha);
+    User findByFieldAndPasswordSha(String filedValue, String passwordSha);
 
     List<User> findAll();
 

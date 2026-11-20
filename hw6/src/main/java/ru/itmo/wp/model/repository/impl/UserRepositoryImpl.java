@@ -62,12 +62,13 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public User findByLoginAndPasswordSha(String login, String passwordSha) {
+    public User findByFieldAndPasswordSha(String filedValue, String passwordSha) {
         try (Connection connection = DATA_SOURCE.getConnection()) {
             try (PreparedStatement statement = connection.prepareStatement(
-                    "SELECT * FROM `User` WHERE `login`=? AND `passwordSha`=?")) {
-                statement.setString(1, login);
-                statement.setString(2, passwordSha);
+                    "SELECT * FROM `User` WHERE (`login`=? OR `email`=?) AND `passwordSha`=?")) {
+                statement.setString(1, filedValue);
+                statement.setString(2, filedValue);
+                statement.setString(3, passwordSha);
                 try (ResultSet resultSet = statement.executeQuery()) {
                     return toUser(statement.getMetaData(), resultSet);
                 }
@@ -76,6 +77,7 @@ public class UserRepositoryImpl implements UserRepository {
             throw new RepositoryException("Can't find User.", e);
         }
     }
+
 
     @Override
     public List<User> findAll() {

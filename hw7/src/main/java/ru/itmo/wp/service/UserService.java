@@ -38,4 +38,6 @@ public class UserService {
     public List<User> findAll() {
         return userRepository.findAllByOrderByIdDesc();
     }
+
+    public void setDisabled(long id, boolean disabled) { userRepository.updateDisabled(id, disabled); }
 }

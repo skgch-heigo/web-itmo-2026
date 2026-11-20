@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import ru.itmo.wp.domain.User;
 import ru.itmo.wp.form.UserCredentials;
 import ru.itmo.wp.form.validator.UserCredentialsEnterValidator;
 import ru.itmo.wp.service.UserService;
@@ -43,10 +44,14 @@ public class EnterPage extends Page {
         if (bindingResult.hasErrors()) {
             return "EnterPage";
         }
-
-        setUser(httpSession, userService.findByLoginAndPassword(enterForm.getLogin(), enterForm.getPassword()));
-        setMessage(httpSession, "Hello, " + getUser(httpSession).getLogin());
-
-        return "redirect:";
+        User user = userService.findByLoginAndPassword(enterForm.getLogin(), enterForm.getPassword());
+        if (user.isDisabled()) {
+            setMessage(httpSession, "User is disabled", "error");
+            return "EnterPage";
+        } else {
+            setUser(httpSession, user);
+            setMessage(httpSession, "Hello, " + getUser(httpSession).getLogin());
+            return "redirect:";
+        }
     }
 }

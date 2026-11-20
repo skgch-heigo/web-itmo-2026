@@ -73,7 +73,7 @@ public class UserService {
             }
             login = user.getLogin();
         }
-        if (findByLoginAndPassword(login, password) == null) {
+        if (findByLoginOrEmailAndPassword(login, password) == null) {
             throw new ValidationException("Invalid login or password");
         }
     }
@@ -84,17 +84,9 @@ public class UserService {
         }
     }
 
-    public User findByLoginAndPassword(String login, String password) {
-        return userRepository.findByLoginAndPasswordSha(login, getPasswordSha(password));
-    }
 
     public User findByLoginOrEmailAndPassword(String loginOrEmail, String password) {
-        String login = loginOrEmail;
-        if (isEmail(loginOrEmail)) {
-            User user = userRepository.findByEmail(loginOrEmail);
-            login = user.getLogin();
-        }
-        return findByLoginAndPassword(login, password);
+        return userRepository.findByFieldAndPasswordSha(loginOrEmail, getPasswordSha(password));
     }
 
     public User find(long id) {
